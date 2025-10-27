@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@theme {
+  --font-heading: "Italiana", sans-serif;
+  --font-parag: "Montserrat", sans-serif;
+
+  --color-beige: rgba(242, 237, 228);
+  --color-burgundy: rgba(47, 20, 19)
+}
+
+@layer base{
+  body{
+    background-color: var(--color-beige);
+    color: var(--color-burgundy)
+  } h1{
+    font-family: var(--font-heading);
+    font-size: 3em;
+  } p {
+    font-family: var(--font-parag);
+    font-size: 1,5em;
+    max-width: 800px;
+  } input {
+    font-family: var(--font-parag);
+    border-bottom: 1px solid black;
+    padding: 0.5em 0.5em;
+  } button {
+    font-family: var(--font-parag);
+  }
+}
+
