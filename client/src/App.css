@@ -18,6 +18,12 @@
   } h2 {
     font-family: var(--font-heading);
     font-size: 1.5em;
+  } h3 {
+    font-family: var(--font-parag);
+    font-size: 1.2em;
+    margin-top: 16px;
+    margin-bottom: 4px;
+    text-decoration: underline;
   } p {
     font-family: var(--font-parag);
     font-size: 1,5em;

@@ -1,41 +1,43 @@
 import { Nav } from "./Nav"
 import deleteIcon from "../assets/delete-icon.svg"
 import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export function History({ changeContent }) {
     const [historyItems, setHistoryItems] = useState([])
+    const navigate = useNavigate()
 
-    //Change when data is fetched, {title: "", content: ""} - Object.entries(...).title
     useEffect(()=>{
         const keys = Object.keys(localStorage)
         setHistoryItems(keys)
     }, [])
 
-    const displayHistory = historyItems.map(plant => {
+    const displayHistory = historyItems.map((plant, i) => {
         return (
-            <Link to="/info">
-                <div 
-                key={plant} 
-                onClick={()=> bringData(plant)}
-                className="flex justify-between items-center p-2 mb-2 w-60 border-b border-transparent hover:border-burgundy hover:cursor-pointer transition delay-50 duration-300 ease-in-out"
-                >
-                    <p>{plant}</p>
-                    <img onClick={() => removeData(plant)} src={deleteIcon} className="opacity-20 hover:opacity-100 transition delay-50 duration-300 ease-in-out" />
-                </div>
-            </Link>
+            <div 
+            key={plant} 
+            onClick={()=> bringData(plant)}
+            className="flex justify-between items-center p-2 mb-2 w-60 border-b border-transparent hover:border-burgundy hover:cursor-pointer transition delay-50 duration-300 ease-in-out"
+            >
+                <p>{plant}</p>
+                <img onClick={(e) => {
+                    e.stopPropagation()
+                    removeData(plant)}}
+                    src={deleteIcon} 
+                    className="opacity-20 hover:opacity-100 transition delay-50 duration-300 ease-in-out" />
+            </div>
         )
     })
 
-    // localStorage.getItem(id) will be changed to title and values
     function bringData(id) {
-        console.log(id)
-        const title = localStorage.getItem(id)
-        const context = localStorage.getItem(id)
+        const title = id
+        const raw = localStorage.getItem(id)
+        const context = JSON.parse(raw)
         changeContent({
             title: title,
             context: context
         })
+        navigate("/info")
     }
 
     function removeData(id) {
