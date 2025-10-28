@@ -3,12 +3,12 @@ import { Routes, Route, useNavigate } from "react-router-dom"
 import './App.css'
 import { Info } from "./pages/Info.jsx"
 import { Landing } from "./pages/Landing.jsx"
-import { History } from './pages/History.jsx'
+import { History } from "./pages/History.jsx"
+import { Care } from "./pages/Care.jsx"
 
 function App() {
-  const [msg, setMsg] = useState(null)
+  const [content, setContent] = useState({})
   const [loading, setLoading] = useState(false)
-  const [history, setHistory] = useState([])
 
   const inputRef = useRef(null)
   const navigate = useNavigate()
@@ -20,15 +20,21 @@ function App() {
     const userInput = inputRef.current.value
     const plant = [userInput.charAt(0).toUpperCase(), userInput.slice(1)].join("")
     if (!plant) return
+
+    const history = Object.keys(localStorage)
     if(history.includes(plant)) {
       console.log("already searched it! check history")
       return
     }
 
+    //data.message will be changed to data.title
     try{
       const res = await fetch(`http://localhost:8000/api/${plant}`)
       const data = await res.json()
-      setMsg(data.message)
+      setContent({
+        title: data.message,
+        context: data.message
+      })
       localStorage.setItem(plant, data.message)
       navigate("/info")
     } catch (err) {
@@ -36,8 +42,11 @@ function App() {
     } finally {
       inputRef.current.value = ""
       setLoading(false)
-      setHistory(prev => [...prev, plant])
     }
+  }
+
+  function changeContent(data) {
+    setContent(data)
   }
 
   return (
@@ -50,11 +59,15 @@ function App() {
         />} />
       <Route path="/info" element={
         <Info 
-          content={msg}
+          content={content.title}
+        />} />
+      <Route path="/care" element={
+        <Care 
+          content={content.title}
         />} />
       <Route path="/history" element={
         <History 
-          entries={history}
+          changeContent={changeContent}
         />
       } />
     </Routes>
