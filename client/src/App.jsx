@@ -57,7 +57,7 @@ function App() {
     }
 
     try{
-      const res = await fetch(`http://localhost:8000/api/${plant}`)
+      const res = await fetch(`https://plant-researcher.onrender.com/api/${plant}`)
       const data = await res.json()
       if(!data || !data.aiReport) {
         throw new Error("Sunucu ile geçici olarak bağlantı kurulamıyor.")
